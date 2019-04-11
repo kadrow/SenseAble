@@ -1,0 +1,50 @@
+const int trig_pin1 = A1;
+const int echo_pin1 = A0;
+
+long duration1;
+int distance1;
+
+bool verbose = true;
+
+void setup()
+{
+  pinMode(trig_pin1, OUTPUT);
+  pinMode(echo_pin1, INPUT);
+  pinMode(5, OUTPUT);
+ 
+  pinMode(4,INPUT_PULLUP);
+  Serial.begin(9600);
+}
+
+void loop()
+{  
+ int val = digitalRead(4);
+
+  digitalWrite(trig_pin1, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig_pin1, LOW);
+  
+  duration1 = pulseIn(echo_pin1, HIGH);
+
+  delay(10);
+
+  int distance1 = duration1*0.034/2;
+
+    
+  if (verbose)
+  {
+    Serial.print("Button: ");
+    Serial.print(val);
+    Serial.print("\t");
+    Serial.print("Distance1: ");
+    Serial.print(distance1);
+    Serial.print("\t");
+  }
+
+  int output1 = map(distance1, 300, 10, 0, 230);
+  int timeDelay1 = map(distance1, 300, 10, 1000, 100);
+
+
+  analogWrite(5, output1);
+  
+}
